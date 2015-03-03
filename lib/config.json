@@ -1,0 +1,7 @@
+{
+    "server_port": "8888",
+    "doc_root": "content",
+	"api_root": "api",
+	"default_page": "index.html",
+	"api_handler_postfix": "_handler"
+}
