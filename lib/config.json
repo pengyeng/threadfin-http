@@ -3,5 +3,6 @@
     "doc_root": "content",
 	"api_root": "api",
 	"default_page": "index.html",
-	"api_handler_postfix": "_handler"
+	"api_handler_postfix": "_handler",
+	"compression":"D"
 }
