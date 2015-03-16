@@ -1,0 +1,34 @@
+{
+    "users": [
+        {
+            "user": {
+                "id": "threadfin",
+                "password": "threadfin",
+                "roles": [
+                    "admin",
+                    "users"
+                ]
+            }
+        },
+        {
+            "user": {
+                "id": "user",
+                "password": "user",
+                "roles": [
+                    "users"
+                ]
+            }
+        }
+
+	],
+    "acl": [
+        {
+            "pattern": "/",
+            "role": "users"
+        },
+        {
+            "pattern": "/admin",
+            "role": "admin"
+        }
+    ]
+}
