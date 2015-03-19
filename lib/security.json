@@ -23,7 +23,7 @@
 	],
     "acl": [
         {
-            "pattern": "/",
+            "pattern": "/ui",
             "role": "users"
         },
         {
