@@ -1,0 +1,13 @@
+{
+    "server_port": "8888",
+    "doc_root": "C:/threadfin/content",
+	"api_root": "C:/threadfin/api",
+	"default_page": "index.html",
+	"api_handler_postfix": "_handler",
+	"compression":"D",
+	"ssl":"Y",
+	"ssl_cert":"C:/threadfin/ssl/certificate.crt",
+	"ssl_private_key":"C:/threadfin/ssl/privateKey.key",
+	"protect":true,
+	"user_acl":"C:/threadfin/acl/security.json"
+}

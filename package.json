@@ -1,0 +1,22 @@
+{
+  "name": "threadfin-http",
+  "version": "1.0.1",
+  "description": "threadfin http web server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshua-lim/threadfin-http.git"
+  },
+  "keywords": [
+    "threadfin-http"
+  ],
+  "author": "joshua lim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshua-lim/threadfin-http/issues"
+  },
+  "homepage": "https://github.com/joshua-lim/threadfin-http"
+}
