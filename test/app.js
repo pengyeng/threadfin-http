@@ -1,5 +1,5 @@
-var server = require('./node_modules/threadfin/lib/threadfin');
+var server = require('threadfin-http');
 
-var config = "C:/threadfin/config.json";
+var config = "C:/threadfin_app/config.json";
 
 server.start(config);

@@ -5,8 +5,6 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 var zlib = require('zlib');
-const crypto = require('crypto');
-
 
 function start(config_path){
 
@@ -24,8 +22,7 @@ function start(config_path){
 		var requestURL = req.url;
 		var acceptEncoding = req.headers['accept-encoding'];
 		var ziplibStatus = configObj.compression ;
-
-
+		
 		if (!acceptEncoding) {
 			acceptEncoding = '';
 		}
@@ -34,13 +31,11 @@ function start(config_path){
 
 			if (configObj.protect){
 
-				var authenticator = require('./module/authentication.js');
-
+				var authenticator = require('./lib/module/authentication');
 				authenticator.load(configObj.user_acl);
-
+				console.log("Completed Loading...");
 				var auth = req.headers['authorization'];
 				var protected = authenticator.protectedzone(requestURL);
-
 				if (!(auth)){
 					if (protected){
 						res.writeHead(401, {
@@ -60,8 +55,7 @@ function start(config_path){
 					var validUser =	authenticator.authenticate(id,password);
 
 				}
-			}
-
+			}			
 			if (!(configObj.protect) || validUser || !(protected)){
 
 				// Handle Compression
@@ -161,7 +155,7 @@ function start(config_path){
 	}
 
 // SSL Implementation
-	if (configObj.ssl = "Y"){
+	if (configObj.ssl == "Y"){
 		var privateKey = fs.readFileSync(configObj.ssl_private_key);
 		var certificate = fs.readFileSync(configObj.ssl_cert);
 		var credentials = {key: privateKey, cert: certificate};

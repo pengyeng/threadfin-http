@@ -1,6 +1,6 @@
 {
   "name": "threadfin-http",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "threadfin http web server",
   "main": "index.js",
   "scripts": {
@@ -8,15 +8,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshua-lim/threadfin-http.git"
+    "url": "git+https://github.com/joshua-lim/threadfin-http.git"
   },
   "keywords": [
     "threadfin-http"
   ],
-  "author": "joshua lim",
+  "author": {
+    "name": "joshua lim"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/joshua-lim/threadfin-http/issues"
   },
-  "homepage": "https://github.com/joshua-lim/threadfin-http"
+  "homepage": "https://github.com/joshua-lim/threadfin-http",
+  "readme": "# threadfin-http\r\nThis is a HTTP server built for Node.JS. \r\nthreadfin-http allows you to host static HTML and REST API. It provides feature such such as HTTP response compression (deflate/gzip), Authentication and configurable document root to meet your basic need as a web server.   \r\n\r\n# Installation\r\nDownload the code latest from github.\r\n\r\n# Usage\r\nExecute node server.js\r\n\r\nConfiguration are stored in config.json.\r\n",
+  "readmeFilename": "README.md",
+  "gitHead": "b2c0d7353f6374df0d0f1240d9fb8ce054231eb8",
+  "_id": "threadfin-http@1.0.2",
+  "_shasum": "cb8aa7f9eb38d59ef4e8153ff2cf50a5e3400be8",
+  "_from": "threadfin-http@*"
 }
