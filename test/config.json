@@ -5,9 +5,11 @@
 	"default_page": "index.html",
 	"api_handler_postfix": "_handler",
 	"compression":"D",
-	"ssl":"Y",
+	"ssl":"N",
 	"ssl_cert":"C:/threadfin/ssl/certificate.crt",
 	"ssl_private_key":"C:/threadfin/ssl/privateKey.key",
 	"protect":true,
-	"user_acl":"C:/threadfin/acl/security.json"
+	"user_acl":"C:/threadfin/acl/security.json",
+	"proxy":true,
+	"target_server":"www.google.com.sg"
 }

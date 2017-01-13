@@ -19,6 +19,9 @@ function start(config_path){
 
 	var handler = function (req, res) {
 
+		var targetServer = configObj.target_server;
+		var proxyEnabled = configObj.proxy;
+
 		var requestURL = req.url;
 		var acceptEncoding = req.headers['accept-encoding'];
 		var ziplibStatus = configObj.compression ;
@@ -33,7 +36,7 @@ function start(config_path){
 
 				var authenticator = require('./lib/module/authentication');
 				authenticator.load(configObj.user_acl);
-				console.log("Completed Loading...");
+
 				var auth = req.headers['authorization'];
 				var protected = authenticator.protectedzone(requestURL);
 				if (!(auth)){
@@ -70,52 +73,66 @@ function start(config_path){
 				}
 
 				//Handle HTML content
-				var fstat = fs.statSync(configObj.doc_root+requestURL);
-				if (fstat.isFile()){
 
-					var indMP4 = requestURL.search(".mp4");
-					if (indMP4 > 0){
-						console.log("this is a video mp4 file");
-						var rangeRequest = req.headers.range;
-						var rangePositions = rangeRequest.replace(/bytes=/, "").split("-");
-						var startPosition = parseInt(rangePositions[0], 10);
-						var partialEndPosition = parseInt(rangePositions[1], 10);
-						var total = fstat.length;
-						var endPosition = partialEndPosition ? parseInt(partialEndPosition, 10) : total - 1;
-						var contentChunkSize = (endPosition-startPosition)+1;
-						res.writeHead(206, { "Content-Range": "bytes " + startPosition + "-" + endPosition + "/" + total,
-							"Accept-Ranges": "bytes",
-							"Content-Length": contentChunkSize,
-							"Content-Type":"video/mp4"});
-						res.end(fstat.slice(startPosition, endPosition+1));
+				//Proxy Implementation
+				if (proxyEnabled) {
 
-					}else {
-						if (ziplibStatus === "D") {
-							var raw = fs.createReadStream(configObj.doc_root + requestURL);
-							raw.pipe(zlib.createDeflate()).pipe(res);
-						} else if (ziplibStatus === "Z") {
-							var raw = fs.createReadStream(configObj.doc_root + requestURL);
-							raw.pipe(zlib.createGzip()).pipe(res);
+					var httpClient = require('./lib/module/httpclient');
+					httpClient.submitHTTPRequest(targetServer,requestURL,res);
+
+				}else{
+					var fstat = fs.statSync(configObj.doc_root+requestURL);
+				}
+
+				if (!(proxyEnabled)) {
+					if (fstat.isFile()) {
+
+						var indMP4 = requestURL.search(".mp4");
+						if (indMP4 > 0) {
+							console.log("this is a video mp4 file");
+							var rangeRequest = req.headers.range;
+							var rangePositions = rangeRequest.replace(/bytes=/, "").split("-");
+							var startPosition = parseInt(rangePositions[0], 10);
+							var partialEndPosition = parseInt(rangePositions[1], 10);
+							var total = fstat.length;
+							var endPosition = partialEndPosition ? parseInt(partialEndPosition, 10) : total - 1;
+							var contentChunkSize = (endPosition - startPosition) + 1;
+							res.writeHead(206, {
+								"Content-Range": "bytes " + startPosition + "-" + endPosition + "/" + total,
+								"Accept-Ranges": "bytes",
+								"Content-Length": contentChunkSize,
+								"Content-Type": "video/mp4"
+							});
+							res.end(fstat.slice(startPosition, endPosition + 1));
+
 						} else {
-							var requestData = fs.readFileSync(configObj.doc_root + requestURL);
-							res.writeHead(200, {'Content-Type': 'text/html'});
-							res.end(requestData);
+							if (ziplibStatus === "D") {
+								var raw = fs.createReadStream(configObj.doc_root + requestURL);
+								raw.pipe(zlib.createDeflate()).pipe(res);
+							} else if (ziplibStatus === "Z") {
+								var raw = fs.createReadStream(configObj.doc_root + requestURL);
+								raw.pipe(zlib.createGzip()).pipe(res);
+							} else {
+								var requestData = fs.readFileSync(configObj.doc_root + requestURL);
+								res.writeHead(200, {'Content-Type': 'text/html'});
+								res.end(requestData);
+							}
 						}
-					}
-				}else if (fstat.isDirectory()){
-					//Handle Default Page
-					var defaultfstat = fs.statSync(configObj.doc_root+requestURL+"/"+configObj.default_page);
-					if (defaultfstat.isFile()){
-						if (ziplibStatus === "D"){
-							var raw = fs.createReadStream(configObj.doc_root+requestURL+"/"+configObj.default_page);
-							raw.pipe(zlib.createDeflate()).pipe(res);
-						}else if (ziplibStatus === "Z"){
-							var raw = fs.createReadStream(configObj.doc_root+requestURL+"/"+configObj.default_page);
-							raw.pipe(zlib.createGzip()).pipe(res);
-						}else{
-							var requestData = fs.readFileSync(configObj.doc_root+requestURL+"/"+configObj.default_page);
-							res.writeHead(200, {'Content-Type': 'text/html'});
-							res.end(requestData);
+					} else if (fstat.isDirectory()) {
+						//Handle Default Page
+						var defaultfstat = fs.statSync(configObj.doc_root + requestURL + "/" + configObj.default_page);
+						if (defaultfstat.isFile()) {
+							if (ziplibStatus === "D") {
+								var raw = fs.createReadStream(configObj.doc_root + requestURL + "/" + configObj.default_page);
+								raw.pipe(zlib.createDeflate()).pipe(res);
+							} else if (ziplibStatus === "Z") {
+								var raw = fs.createReadStream(configObj.doc_root + requestURL + "/" + configObj.default_page);
+								raw.pipe(zlib.createGzip()).pipe(res);
+							} else {
+								var requestData = fs.readFileSync(configObj.doc_root + requestURL + "/" + configObj.default_page);
+								res.writeHead(200, {'Content-Type': 'text/html'});
+								res.end(requestData);
+							}
 						}
 					}
 				}
