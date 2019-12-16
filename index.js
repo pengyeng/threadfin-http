@@ -152,7 +152,7 @@ function start(config_path){
 				}
 				//Handle API request
 				if (fs.existsSync(configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js')) {
-					var requestHandler = require(configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js');
+					var requestHandler = require('../../'+configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js');
 					requestHandler.process(configObj,req,res);
 				}else{
 					//Handle Page Not Found
