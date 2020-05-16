@@ -16,6 +16,6 @@ Create config.json. Sample config.json is available in test folder.</br>
 Create an error folder and place a 404.html in the folder.</br>
 
 # Usage
-create a content folder and place your index.html in the folder. </br>
+Create a content folder and place your index.html in the folder. </br>
 Execute "node app.js"</br>
 
