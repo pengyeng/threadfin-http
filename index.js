@@ -5,6 +5,11 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 var zlib = require('zlib');
+var myHistogramList = Array(); 
+
+function metrics(histogramList){
+	myHistogramList = histogramList;
+}	
 
 function start(config_path){
 
@@ -153,6 +158,18 @@ function start(config_path){
 				//Handle API request
 				if (fs.existsSync(configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js')) {
 					var requestHandler = require('../../'+configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js');
+					
+					if (myHistogramList != null){
+						console.log("myHistogramList is not Null");
+						myHistogramList.forEach(element => {
+                           console.log(element[0]);
+						   console.log(configObj.api_root+handlerPath);						   
+                          if (element[0] == configObj.api_root+handlerPath){
+							console.log("match");  
+						    requestHandler.setHistogram(element[1]); 
+   						  } 	  
+                        }); 	
+					}	
 					requestHandler.process(configObj,req,res);
 				}else{
 					//Handle Page Not Found
@@ -186,3 +203,4 @@ function start(config_path){
 }
 
 module.exports.start = start;
+module.exports.metrics = metrics;
