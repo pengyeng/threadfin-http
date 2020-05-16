@@ -11,7 +11,7 @@ create a js file called app.js with the following lines.</br>
 var server = require('threadfin-http');</br>
 var config = "C:/threadfin/config.json";</br>
 server.start(config);</br>
-&nbsp</br>
+&nbsp;</br>
 create config.json. Sample config.json is available in test folder.</br>
 create an error folder and place a 404.html in the folder.</br>
 
