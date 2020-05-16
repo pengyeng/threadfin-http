@@ -6,11 +6,14 @@ Subsequently, I have also added features such as reverse proxy and prometheus in
 
 # Installation
 Run npm install threadfin-http to download the latest package.
-create a js file called app.js with the following lines.Sample config.json is available in test folder.
+create a js file called app.js with the following lines. 
 
 var server = require('threadfin-http');
 var config = "C:/threadfin/config.json";
 server.start(config);
+
+create config.json. Sample config.json is available in test folder.
+create an error folder and place a 404.html in the folder.
 
 # Usage
 Execute node app.js
