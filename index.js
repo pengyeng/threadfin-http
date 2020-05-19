@@ -5,10 +5,10 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 var zlib = require('zlib');
-var myHistogramList = Array(); 
+var myObjectList = Array(); 
 
-function metrics(histogramList){
-	myHistogramList = histogramList;
+function passing_object(objectList){
+	myObjectList = objectList;
 }	
 
 function start(config_path){
@@ -159,16 +159,20 @@ function start(config_path){
 				if (fs.existsSync(configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js')) {
 					var requestHandler = require('../../'+configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js');
 					
-					if (myHistogramList != null){
-						console.log("myHistogramList is not Null");
-						myHistogramList.forEach(element => {
+					if (myObjectList != null){
+						console.log("myObjectList is not Null");
+						for (i=0;  i < myObjectList.length; i++) 
+						{
+						   var element = Array();
+						   element = myObjectList[i];
                            console.log(element[0]);
 						   console.log(configObj.api_root+handlerPath);						   
                           if (element[0] == configObj.api_root+handlerPath){
-							console.log("match");  
-						    requestHandler.setHistogram(element[1]); 
+							console.log("object matched");  
+						    requestHandler.setObjectList(element[1]);							               
+                            break;							
    						  } 	  
-                        }); 	
+                        } 	
 					}	
 					requestHandler.process(configObj,req,res);
 				}else{
@@ -180,6 +184,7 @@ function start(config_path){
 				}
 			}catch(err){
 				//Handle Page Not Found
+				console.log(err);
 				res.writeHead(404, {'Content-Type': 'text/html'});
 				var requestData = fs.readFileSync('./error/404.html');
 				res.end(requestData);
@@ -203,4 +208,4 @@ function start(config_path){
 }
 
 module.exports.start = start;
-module.exports.metrics = metrics;
+module.exports.passing_object = passing_object;
