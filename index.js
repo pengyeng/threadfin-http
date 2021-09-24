@@ -157,10 +157,21 @@ function start(config_path){
 				}
 				//Handle API request
 				if (fs.existsSync(configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js')) {
+					
+					
+
 					var requestHandler = require('../../'+configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js');
 					
-					if (myObjectList != null){
-						console.log("myObjectList is not Null");
+					var apiVersion = req.headers['accept-version'];
+					if (apiVersion != null && apiVersion != "" && typeof apiVersion !== 'undefined'){
+						try{
+							requestHandler.setVersion(apiVersion);
+						}catch (e){
+							console.log("WARN: requestHandler.setVersion not defined in JS file");							
+						}				
+					}
+					
+					if (myObjectList != null){						
 						for (i=0;  i < myObjectList.length; i++) 
 						{
 						   var element = Array();
