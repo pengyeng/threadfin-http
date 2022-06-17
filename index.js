@@ -156,11 +156,33 @@ function start(config_path){
 					var handlerPath = requestURL.substr(0,n);
 				}
 				//Handle API request
-				if (fs.existsSync(configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js')) {
+				var httpMethod = "";
+				console.log ("Request Method : "+req.method);
+				switch (req.method) {
+					case 'GET':
+						httpMethod = "/get"
+						break;
+					case 'PATCH':
+						httpMethod = "/patch"
+						break;
+					case 'POST':
+						httpMethod = "/post"
+						break;
+					case 'PUT':
+						httpMethod = "/put"
+						break;
+					case 'DELETE':
+						httpMethod = "/delete"
+						
+						break;	
+				}
+				console.log(configObj.api_root+httpMethod+handlerPath+configObj.api_handler_postfix+'.js');
+				if (fs.existsSync(configObj.api_root+httpMethod+handlerPath+configObj.api_handler_postfix+'.js')) {
 					
-					
-
-					var requestHandler = require('../../'+configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js');
+			
+					//var requestHandler = require('../../'+configObj.api_root+handlerPath+configObj.api_handler_postfix+'.js');
+					console.log(configObj.api_root+httpMethod+handlerPath+configObj.api_handler_postfix+'.js');
+					var requestHandler = require(configObj.api_root+httpMethod+handlerPath+configObj.api_handler_postfix+'.js');
 					
 					var apiVersion = req.headers['accept-version'];
 					if (apiVersion != null && apiVersion != "" && typeof apiVersion !== 'undefined'){
